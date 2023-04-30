@@ -1,0 +1,5 @@
+.env
+voice_id_history.json
+.vscode/
+*.mp3
+__pycache__/
