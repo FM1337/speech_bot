@@ -24,6 +24,7 @@ class VoiceCommands(commands.Cog):
 
     @app_commands.command(name="list-voices", description="List all available voices")
     async def list_voices(self, interaction: discord.Interaction) -> None:
+        await interaction.response.send_message("Fetching voices...", ephemeral=True)
         voices = get_voices()
         # create an embed
         embed = discord.Embed(title="Available voices", color=0x00ff00)
@@ -35,19 +36,19 @@ class VoiceCommands(commands.Cog):
             if len(embed.fields) == 25:
                 if needsFollowup:
                     # if we already sent a message we just edit it
-                    await interaction.followup.send(embed=embed)
+                    await interaction.followup.send(embed=embed, ephemeral=True)
                     # wait a bit so we don't get rate limited
                     await asyncio.sleep(1)
                 else:
                     # if we haven't sent a message we send one
-                    await interaction.response.send_message(embed=embed, ephemeral=True)
+                    await interaction.followup.send(embed=embed, ephemeral=True)
                     needsFollowup = True
                 embed = discord.Embed(title="Available voices", color=0x00ff00)
         # send the embed
         if needsFollowup:
-            await interaction.followup.send(embed=embed)
+            await interaction.followup.send(embed=embed, ephemeral=True)
         else:
-            await interaction.response.send_message(embed=embed, ephemeral=True)
+            await interaction.followup.send(embed=embed, ephemeral=True)
 
     @app_commands.command(name="remaining-quota", description="Get the remaining quota")
     async def remaining_quota(self, interaction: discord.Interaction) -> None:
